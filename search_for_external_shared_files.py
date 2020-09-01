@@ -59,7 +59,7 @@ def read_credentials():
     return creds
 
 def search_for_external_shared_files(file_id, directory = '', next_page_token = None):
-    results = fetch_files_list(file_id, next_page_token)
+    results = fetch_files(file_id, next_page_token)
     items = results.get('files', [])
 
     if not items:
@@ -78,7 +78,7 @@ def search_for_external_shared_files(file_id, directory = '', next_page_token = 
         print('Next Page.')
         search_for_external_shared_files(file_id, directory, results['nextPageToken'])
 
-def fetch_files_list(file_id, next_page_token = None):
+def fetch_files(file_id, next_page_token = None):
     return service.files().list(
         q="'{0}' in parents and trashed = false".format(file_id),
         fields="nextPageToken, files(id, name, mimeType, permissions(type, emailAddress, domain))",
